@@ -15,11 +15,14 @@ func main() {
 	go func() {
 		/** Infinite loop */
 		for {
-			DoingWork()
+			/** Do 10000 steps */
+			Doing10000Work()
 			/** Wait for 5 seconds and expire */
 			<-Wait(time.Second * 5)
 			/** Time Expired */
 			WaitDone()
+			/** Do 50000 steps */
+			Doing50000Work()
 		}
 	}()
 	
@@ -45,8 +48,14 @@ func ExitingApp () {
 	fmt.Println ("Exiting the App")
 }
 
-func DoingWork () {
+func Doing10000Work () {
 	for i := 5; i < 10000; i++ {
+		fmt.Println ("Processing Work")
+	} 
+}
+
+func Doing50000Work () {
+	for i := 5; i < 50000; i++ {
 		fmt.Println ("Processing Work")
 	} 
 }
