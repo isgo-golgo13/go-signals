@@ -1,0 +1,52 @@
+package main
+
+import (
+	"fmt"
+	"os"
+	"os/signal"
+	"time"
+)
+
+func main() {
+
+	killSignal := make(chan os.Signal, 1)
+	signal.Notify(killSignal, os.Interrupt)
+
+	go func() {
+		/** Infinite loop */
+		for {
+			DoingWork()
+			/** Wait for 5 seconds and expire */
+			<-Wait(time.Second * 5)
+			/** Time Expired */
+			WaitDone()
+		}
+	}()
+	
+	<-killSignal
+	
+	ExitingApp()
+}
+
+
+
+/** Functions **/
+
+func WaitDone() {
+	fmt.Println ("Time expired")
+}
+
+func Wait(duration time.Duration) <-chan time.Time {
+	timeout := time.After(duration)
+	return timeout
+}
+
+func ExitingApp () {
+	fmt.Println ("Exiting the App")
+}
+
+func DoingWork () {
+	for i := 5; i < 10000; i++ {
+		fmt.Println ("Processing Work")
+	} 
+}
